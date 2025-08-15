@@ -145,15 +145,7 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
 
         // If no saved order exists, create default playlist
         if (playlist == null || playlist.isEmpty()) {
-            playlist = new ArrayList<>();
-            playlist.add(new Song("Big Dawgs", "Hanuman kind", R.raw.big_dawgs, R.drawable.big_dawgs_cover));
-            playlist.add(new Song("Roar of Narasimha", "Sam C.S", R.raw.roar_of_narsimha, R.drawable.narasimha_cover));
-            playlist.add(new Song("Sapphire", "Ed Sheeran", R.raw.sapphire, R.drawable.sapphire_cover));
-            playlist.add(new Song("Millionaire", "Yo YO Honey Singh", R.raw.millionaire, R.drawable.millionaire_cover));
-            playlist.add(new Song("Run It Up", "Hanuman kind", R.raw.runitup, R.drawable.run_it_up_cover));
-            playlist.add(new Song("Six Days", "DJ Shadow", R.raw.six_days, R.drawable.six_days_cover));
-            playlist.add(new Song("Tokyo Drift", "Teriyaki Boyz", R.raw.tokyo_drift, R.drawable.tokyo_drift_cover));
-            playlist.add(new Song("Skyfall", "Adele", R.raw.skyfall, R.drawable.skyfall_cover));
+            playlist = new ArrayList<>(playlistdata.getDefaultPlaylist());
         }
 
         originalPlaylist = new ArrayList<>(playlist);

@@ -63,8 +63,8 @@
                         android:layout_marginEnd="16dp">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
                             android:layout_gravity="center"
                             android:src="@drawable/logo"/>
 
@@ -165,28 +165,28 @@
                             android:padding="28dp"
                             android:paddingBottom="8dp">
 
-                            <!-- Album Art with Glow -->
+                            <!-- Album Art with Vinyl Disk -->
                             <FrameLayout
+                                android:id="@+id/albumframe"
                                 android:layout_width="200dp"
                                 android:layout_height="200dp"
                                 android:layout_gravity="center"
                                 android:layout_marginBottom="8dp">
 
-                                <!-- Glow Effect -->
-                                <!--                        <View-->
-                                <!--                            android:layout_width="match_parent"-->
-                                <!--                            android:layout_height="match_parent"-->
-                                <!--                            android:background="@drawable/album_art_glow"-->
-                                <!--                            android:layout_margin="5dp"-->
-                                <!--                            android:alpha="0.6" />-->
+                                <!-- Vinyl Disk Background -->
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/music_disk"
+                                    android:scaleType="centerCrop" />
 
                                 <!-- Album Art Container -->
                                 <androidx.cardview.widget.CardView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    app:cardCornerRadius="100dp"
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:cardCornerRadius="60dp"
                                     app:cardElevation="8dp"
-                                    android:layout_margin="10dp"
                                     app:cardBackgroundColor="#CC2A2A2A">
 
                                     <ImageView
@@ -384,6 +384,8 @@
                             android:layout_height="100dp"
                             android:orientation="horizontal"
                             android:gravity="center|bottom"
+                            android:elevation="-10dp"
+                            android:layout_marginTop="-90dp"
                             android:alpha="0.7"
                             android:clipToPadding="false" />
 

@@ -157,7 +157,7 @@ public class developerZone extends AppCompatActivity {
         // Back button using binding
         binding.backButton.setOnClickListener(v -> {
             animateButtonPress(v);
-            new Handler(Looper.getMainLooper()).postDelayed(this::handleBackPress, 150);
+            new Handler(Looper.getMainLooper()).postDelayed(this::handleBackPress, 10);
         });
 
         // Share button using binding

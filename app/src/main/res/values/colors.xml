@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#667eea</color>
+    <color name="primary_dark">#5a6fd8</color>
+    <color name="accent">#FF6B35</color>
+
+    <!-- Background Colors -->
+    <color name="background_primary">#0F0C29</color>
+    <color name="background_secondary">#24243e</color>
+    <color name="background_tertiary">#302b63</color>
+
+    <!-- Card and Surface Colors -->
+    <color name="card_background">#1A1A1A</color>
+    <color name="surface_light">#2A2A2A</color>
+    <color name="surface_dark">#161616</color>
+
+    <!-- Button Colors -->
+    <color name="button1">#667eea</color>
+    <color name="button2">#FF6B35</color>
+    <color name="button3">#764ba2</color>
+    <color name="button4">#f093fb</color>
+    <color name="button5">#f5576c</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="text_tertiary">#607D8B</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="error">#FF5252</color>
+    <color name="info">#2196F3</color>
+
+    <!-- Transparent Colors -->
+    <color name="black_50">#80000000</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+</resources>

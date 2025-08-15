@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context="com.nayanpote.Nayora.MainActivity">
+
+    <!-- Background Animated Gradient -->
+    <View
+        android:id="@+id/gradientOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/animated_gradient" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:paddingBottom="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="20dp">
+
+            <!-- Header with Connection Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/glass_effect_bg"
+                android:paddingTop="32dp"
+                android:paddingBottom="24dp"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp">
+
+                <!-- Top Header Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp">
+
+                    <!-- Logo Container -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/logoContainer"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="8dp"
+                        app:cardBackgroundColor="#E61E1E1E"
+                        android:layout_marginEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/logo"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- App Title and Status -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nayora"
+                            android:textColor="@android:color/white"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium"
+                            android:letterSpacing="0.02"/>
+
+                        <TextView
+                            android:id="@+id/statusText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ready to connect"
+                            android:textColor="#909090"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <!-- Playlist Toggle Button -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="#CC2A2A2A">
+
+                        <ImageView
+                            android:id="@+id/playlistToggle"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_playlist_open"
+                            app:tint="@android:color/white"
+                            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <!-- Connection Button -->
+                <Button
+                    android:id="@+id/connectBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Connect to Device"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/connect_button_bg"
+                    android:elevation="8dp"
+                    android:letterSpacing="0.02" />
+
+            </LinearLayout>
+
+            <!-- Music Player Card -->
+            <FrameLayout
+                android:id="@+id/playerCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <!-- Glass Effect Background with Content -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#00FFFFFF">
+
+                    <!-- Main Player Content Container -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/glass_effect_bg"
+                        android:orientation="vertical">
+
+                        <!-- Player Content with Padding -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="28dp"
+                            android:paddingBottom="8dp">
+
+                            <!-- Album Art with Glow -->
+                            <FrameLayout
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="8dp">
+
+                                <!-- Glow Effect -->
+                                <!--                        <View-->
+                                <!--                            android:layout_width="match_parent"-->
+                                <!--                            android:layout_height="match_parent"-->
+                                <!--                            android:background="@drawable/album_art_glow"-->
+                                <!--                            android:layout_margin="5dp"-->
+                                <!--                            android:alpha="0.6" />-->
+
+                                <!-- Album Art Container -->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    app:cardCornerRadius="100dp"
+                                    app:cardElevation="8dp"
+                                    android:layout_margin="10dp"
+                                    app:cardBackgroundColor="#CC2A2A2A">
+
+                                    <ImageView
+                                        android:id="@+id/albumArt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/default_album_art"
+                                        android:scaleType="centerCrop" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </FrameLayout>
+
+                            <!-- Song Information -->
+                            <TextView
+                                android:id="@+id/currentSongTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Select a song to play"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:maxLines="2"
+                                android:ellipsize="end"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.01"
+                                android:layout_marginBottom="18dp"
+                                android:shadowColor="#80000000"
+                                android:shadowDx="1"
+                                android:shadowDy="1"
+                                android:shadowRadius="3" />
+
+                            <!-- Progress Bar Section -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="20dp">
+
+                                <TextView
+                                    android:id="@+id/currentTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0:00"
+                                    android:textColor="#C0FFFFFF"
+                                    android:textSize="13sp"
+                                    android:fontFamily="sans-serif-medium" />
+
+                                <SeekBar
+                                    android:id="@+id/progressSeeker"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:progressDrawable="@drawable/progress_bar_style"
+                                    android:thumb="@drawable/progress_thumb"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp" />
+
+                                <TextView
+                                    android:id="@+id/totalTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0:00"
+                                    android:textColor="#C0FFFFFF"
+                                    android:textSize="13sp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:gravity="end" />
+
+                            </LinearLayout>
+
+                            <!-- Main Control Buttons -->
+                            <LinearLayout
+                                android:id="@+id/playerControls"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginBottom="20dp">
+
+                                <!-- Previous Button -->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
+                                    app:cardCornerRadius="28dp"
+                                    app:cardBackgroundColor="#CC2A2A2A"
+                                    android:layout_marginEnd="20dp">
+
+                                    <ImageView
+                                        android:id="@+id/prevBtn"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_previous"
+                                        app:tint="@android:color/white"
+                                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                                </androidx.cardview.widget.CardView>
+
+                                <!-- Play/Pause Button -->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="72dp"
+                                    android:layout_height="72dp"
+                                    app:cardCornerRadius="36dp"
+                                    app:cardBackgroundColor="#898BBF"
+                                    android:layout_marginHorizontal="20dp">
+
+                                    <ImageView
+                                        android:id="@+id/playPauseBtn"
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_play"
+                                        app:tint="@android:color/white"
+                                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                                </androidx.cardview.widget.CardView>
+
+                                <!-- Next Button -->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
+                                    app:cardCornerRadius="28dp"
+                                    app:cardBackgroundColor="#CC2A2A2A"
+                                    android:layout_marginStart="20dp">
+
+                                    <ImageView
+                                        android:id="@+id/nextBtn"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_next"
+                                        app:tint="@android:color/white"
+                                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </LinearLayout>
+
+                            <!-- Shuffle and Repeat Controls -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginBottom="0dp">
+
+                                <!-- Shuffle Button -->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="44dp"
+                                    android:layout_height="44dp"
+                                    app:cardCornerRadius="22dp"
+                                    app:cardBackgroundColor="#CC2A2A2A"
+                                    android:layout_marginEnd="24dp">
+
+                                    <ImageView
+                                        android:id="@+id/shuffleBtn"
+                                        android:layout_width="22dp"
+                                        android:layout_height="22dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_shuffle"
+                                        app:tint="@android:color/white"
+                                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                                </androidx.cardview.widget.CardView>
+
+                                <!-- Repeat Button -->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="44dp"
+                                    android:layout_height="44dp"
+                                    app:cardCornerRadius="22dp"
+                                    app:cardBackgroundColor="#CC2A2A2A"
+                                    android:layout_marginStart="24dp">
+
+                                    <ImageView
+                                        android:id="@+id/repeatBtn"
+                                        android:layout_width="22dp"
+                                        android:layout_height="22dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_repeat"
+                                        app:tint="@android:color/white"
+                                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Audio Visualizer - Edge to Edge at Bottom Inside Card -->
+                        <LinearLayout
+                            android:id="@+id/visualizerBars"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:orientation="horizontal"
+                            android:gravity="center|bottom"
+                            android:alpha="0.7"
+                            android:clipToPadding="false" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
+
+            <!-- Search bar -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                android:hint="Search Songs"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:endIconDrawable="@drawable/search"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingVertical="12dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Playlist RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playlistRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="20dp"
+                android:clipToPadding="false"
+                android:paddingVertical="8dp" />
+
+            <!-- Footer -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="© 2025 Nayan Pote. All rights reserved."
+                android:textColor="#80FFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Lottie Animation - Music Animation -->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/musicAnimation"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:forceDarkAllowed="false"
+                app:lottie_rawRes="@raw/dancing_dog"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_speed="1.0" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

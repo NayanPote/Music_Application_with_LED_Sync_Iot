@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <!-- Black to Gold -->
+    <item android:duration="1000">
+        <shape>
+            <solid android:color="#000000" />
+            <gradient
+                android:startColor="#000000"
+                android:centerColor="#FFD700"
+                android:endColor="#2E2E2E"
+                android:angle="45"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Dark Brown to Gold -->
+    <item android:duration="1000">
+        <shape>
+            <solid android:color="#1A1A1A" />
+            <gradient
+                android:startColor="#1A1A1A"
+                android:centerColor="#B8860B"
+                android:endColor="#3B2F2F"
+                android:angle="90"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Black to Bronze -->
+    <item android:duration="1000">
+        <shape>
+            <solid android:color="#0D0D0D" />
+            <gradient
+                android:startColor="#0D0D0D"
+                android:centerColor="#CD853F"
+                android:endColor="#1F1F1F"
+                android:angle="135"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Dark Grey to Gold -->
+    <item android:duration="1000">
+        <shape>
+            <solid android:color="#141414" />
+            <gradient
+                android:startColor="#141414"
+                android:centerColor="#FFD700"
+                android:endColor="#2B2B2B"
+                android:angle="180"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Charcoal to Goldenrod -->
+    <item android:duration="1000">
+        <shape>
+            <solid android:color="#1C1C1C" />
+            <gradient
+                android:startColor="#1C1C1C"
+                android:centerColor="#DAA520"
+                android:endColor="#2E2E2E"
+                android:angle="225"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Black to Dark Copper -->
+    <item android:duration="1000">
+        <shape>
+            <solid android:color="#000000" />
+            <gradient
+                android:startColor="#000000"
+                android:centerColor="#B87333"
+                android:endColor="#1A1A1A"
+                android:angle="315"
+                android:type="linear" />
+        </shape>
+    </item>
+
+</animation-list>

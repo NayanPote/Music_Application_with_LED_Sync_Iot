@@ -12,7 +12,7 @@
         android:id="@+id/gradientOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/animated_gradient" />
+        android:background="@drawable/animated_gradient2" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -129,21 +129,23 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:background="@drawable/connect_button_bg"
+                    android:paddingVertical="10dp"
+                    android:backgroundTint="#806517"
                     android:elevation="8dp"
                     android:letterSpacing="0.02" />
 
             </LinearLayout>
 
-            <!-- Music Player Card -->
+            <!-- Flippable Music Player Card Container -->
             <FrameLayout
-                android:id="@+id/playerCard"
+                android:id="@+id/playerCardContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="15dp">
 
-                <!-- Glass Effect Background with Content -->
+                <!-- Front Side - Music Player -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/playerCardFront"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="32dp"
@@ -162,8 +164,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="28dp"
-                            android:paddingBottom="8dp">
+                            android:padding="28dp">
 
                             <!-- Album Art with Vinyl Disk -->
                             <FrameLayout
@@ -292,7 +293,7 @@
                                     android:layout_width="72dp"
                                     android:layout_height="72dp"
                                     app:cardCornerRadius="36dp"
-                                    app:cardBackgroundColor="#898BBF"
+                                    app:cardBackgroundColor="#806517"
                                     android:layout_marginHorizontal="20dp">
 
                                     <ImageView
@@ -386,53 +387,154 @@
                             android:gravity="center|bottom"
                             android:elevation="-10dp"
                             android:layout_marginTop="-90dp"
-                            android:alpha="0.7"
+                            android:alpha="0.9"
                             android:clipToPadding="false" />
 
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
-            </FrameLayout>
-
-            <!-- Search bar -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone"
-                android:hint="Search Songs"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp"
-                app:endIconDrawable="@drawable/search"
-                app:endIconMode="custom">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/searchEditText"
+                <!-- Back Side - Search and Playlist -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/playerCardBack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:paddingVertical="12dp" />
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#00FFFFFF"
+                    android:visibility="gone">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <!-- Playlist Content Container -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/glass_effect_bg"
+                        android:orientation="vertical"
+                        android:padding="28dp">
 
-            <!-- Playlist RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/playlistRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginBottom="20dp"
-                android:clipToPadding="false"
-                android:paddingVertical="8dp" />
+                        <!-- Playlist Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="24dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_playlist_open"
+                                app:tint="@android:color/white"
+                                android:layout_marginEnd="12dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Your Playlist"
+                                android:textColor="@android:color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.01" />
+
+                        </LinearLayout>
+
+                        <!-- Search bar -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/searchLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:hint="Search Songs"
+                            app:boxCornerRadiusBottomEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusTopStart="12dp"
+                            app:boxStrokeColor="@android:color/white"
+                            app:boxStrokeWidth="1dp"
+                            app:hintTextColor="@android:color/white"
+                            app:endIconDrawable="@drawable/search"
+                            app:endIconMode="custom"
+                            app:endIconTint="@android:color/white">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/searchEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionSearch"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingVertical="12dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="#80FFFFFF" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Playlist RecyclerView Container -->
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="315dp">
+
+                            <!-- Playlist RecyclerView -->
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/playlistRecycler"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:nestedScrollingEnabled="true"
+                                android:clipToPadding="false"
+                                android:paddingVertical="8dp"
+                                android:scrollbars="none"
+                                android:fadeScrollbars="false"
+                                android:scrollbarStyle="outsideOverlay"
+                                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+                                android:scrollbarTrackVertical="@drawable/scrollbar_track" />
+
+                            <!-- Empty State Message -->
+                            <LinearLayout
+                                android:id="@+id/emptyStateLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:src="@drawable/ic_playlist_open"
+                                    app:tint="#60FFFFFF"
+                                    android:layout_marginBottom="16dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="No songs found"
+                                    android:textColor="#80FFFFFF"
+                                    android:textSize="16sp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:gravity="center" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Connect your device to load music"
+                                    android:textColor="#60FFFFFF"
+                                    android:textSize="14sp"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center"
+                                    android:layout_marginTop="4dp" />
+
+                            </LinearLayout>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
 
             <!-- Footer -->
             <TextView
@@ -445,19 +547,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="12dp" />
-
-            <!-- Lottie Animation - Music Animation -->
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/musicAnimation"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:forceDarkAllowed="false"
-                app:lottie_rawRes="@raw/dancing_dog"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_speed="1.0" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

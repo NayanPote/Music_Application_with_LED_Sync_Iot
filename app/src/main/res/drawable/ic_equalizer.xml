@@ -15,8 +15,9 @@
                 android:endX="8"
                 android:endY="20"
                 android:type="linear"
-                android:startColor="#FF6A00"
-                android:endColor="#FFB400" />
+                android:startColor="#FFD700"
+            android:centerColor="#FFA500"
+            android:endColor="#B8860B" />
         </aapt:attr>
     </path>
 
@@ -29,8 +30,9 @@
                 android:endX="14"
                 android:endY="20"
                 android:type="linear"
-                android:startColor="#FF6A00"
-                android:endColor="#FFB400" />
+                android:startColor="#FFD700"
+            android:centerColor="#FFA500"
+            android:endColor="#B8860B" />
         </aapt:attr>
     </path>
 
@@ -43,8 +45,9 @@
                 android:endX="20"
                 android:endY="20"
                 android:type="linear"
-                android:startColor="#FF6A00"
-                android:endColor="#FFB400" />
+                android:startColor="#FFD700"
+            android:centerColor="#FFA500"
+            android:endColor="#B8860B" />
         </aapt:attr>
     </path>
 

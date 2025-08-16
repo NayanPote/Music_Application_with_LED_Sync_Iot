@@ -13,7 +13,7 @@
         android:id="@+id/gradientOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/animated_gradient" />
+        android:background="@drawable/animated_gradient2" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                     android:layout_height="48dp"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="6dp"
-                    app:cardBackgroundColor="#CC2A2A2A"
+                    app:cardBackgroundColor="#806517"
                     android:layout_marginEnd="16dp">
 
                     <ImageView
@@ -80,7 +80,7 @@
                     android:layout_height="48dp"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="6dp"
-                    app:cardBackgroundColor="#CC898BBF">
+                    app:cardBackgroundColor="#DAA520">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -179,7 +179,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:cardCornerRadius="12dp"
-                            app:cardBackgroundColor="#424242"
+                            app:cardBackgroundColor="#806517"
                             android:layout_marginEnd="6dp">
 
                             <LinearLayout
@@ -215,7 +215,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:cardCornerRadius="12dp"
-                            app:cardBackgroundColor="#424242"
+                            app:cardBackgroundColor="#806517"
                             android:layout_marginStart="6dp">
 
                             <LinearLayout
@@ -280,7 +280,7 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             app:cardCornerRadius="40dp"
-                            app:cardBackgroundColor="#E61E1E1E"
+                            app:cardBackgroundColor="#806517"
                             android:layout_marginEnd="16dp">
 
                             <ImageView
@@ -347,7 +347,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
-                        app:cardBackgroundColor="#424242"
+                        app:cardBackgroundColor="#806517"
                         android:layout_marginBottom="12dp"
                         android:foreground="?android:attr/selectableItemBackground">
 
@@ -414,7 +414,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
-                        app:cardBackgroundColor="#424242"
+                        app:cardBackgroundColor="#806517"
                         android:layout_marginBottom="12dp"
                         android:foreground="?android:attr/selectableItemBackground">
 

@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Internal storage -->
     <files-path name="files" path="." />
     <cache-path name="cache" path="." />
-    <external-path name="external" path="." />
+
+    <!-- External storage -->
     <external-files-path name="external_files" path="." />
     <external-cache-path name="external_cache" path="." />
+
+    <!-- Root directory access for APK sharing -->
     <root-path name="root" path="." />
+
+    <!-- Specific path for shared APKs -->
+    <external-files-path name="shared_apk" path="shared_apk/" />
+
+    <!-- Additional paths for broader file access -->
+    <external-path name="external" path="." />
+    <files-path name="internal_files" path="files/" />
 </paths>

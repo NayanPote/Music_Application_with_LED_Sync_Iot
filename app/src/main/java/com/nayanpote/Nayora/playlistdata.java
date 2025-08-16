@@ -10,6 +10,33 @@ public class playlistdata {
     public static List<Song> getDefaultPlaylist() {
         List<Song> playlist = new ArrayList<>();
 
+
+        //custom playlist
+        playlist.add(new Song("Jugraafia", "Udit Narayan, Shreya Ghoshal", R.raw.jugraafiya, R.drawable.jugraafia_cover));
+        playlist.add(new Song("Illuminati", "Dabzee", R.raw.illuminati, R.drawable.illuminati_cover));
+        playlist.add(new Song("Uyi Amma", "Madhubanti Bagchi, Amitabh Bhattacharya, Amit Trivedi", R.raw.uyi_amma, R.drawable.uyi_amma_cover));
+        playlist.add(new Song("Chuttamalle ", "Shilpa Rao, Anirudh Ravichander", R.raw.chuttamalle, R.drawable.chuttamalle_cover));
+        playlist.add(new Song("Peelings", "Siju Thuravoor, Raqueeb Alam, Madhubanti Bagchi, Devi Sri Prasad, Javed Ali", R.raw.peelings, R.drawable.peelings_cover));
+        playlist.add(new Song("Mast Magan", "Arijit Singh", R.raw.mast_magan, R.drawable.mast_magan_cover));
+        playlist.add(new Song("Aa Re Pritam Pyare", "Sarosh Sami, Mamta Sharma", R.raw.aa_re_pritam_pyare, R.drawable.aa_re_pritam_pyare_cover));
+        playlist.add(new Song("Fevicol Se", "Mamta Sharma", R.raw.fevicol_se, R.drawable.fevicol_se_cover));
+        playlist.add(new Song("Munni Badnaam", "Aishwarya, Mamta Sharma", R.raw.munni_badnaam_hui, R.drawable.munni_badnaam_cover));
+        playlist.add(new Song("Sheila Ki Jawani", "Sunidhi Chauhan, Vishal Dadlani", R.raw.sheila_ki_jawani, R.drawable.sheila_ki_jawani_cover));
+        playlist.add(new Song("Chikni Chameli", "Shreya Ghoshal", R.raw.chikni_chameli, R.drawable.chikni_chameli_cover));
+        playlist.add(new Song("Dil Dhadakne Do", "Joi Barua, Suraj Jagan, Shankar Mahadevan", R.raw.dil_dhadakne_do, R.drawable.dil_dhadakne_do_cover));
+        playlist.add(new Song("Deva Tujhya Gabharyala", "Aadarsh Shinde, Kirti Killedar, Aanandi Joshi", R.raw.deva_tujhya_gaabhaaryaalaa, R.drawable.deva_tujhya_gaabhaaryaalaa_cover));
+        playlist.add(new Song("Makhmali", "Sonu Nigam, Shreya Ghoshal", R.raw.makhmali, R.drawable.makhmali_cover));
+        playlist.add(new Song("Udhal Ho", "Adarsh Shinde, Sanjay Leela Bhansali", R.raw.udhal_ho, R.drawable.udhal_ho_cover));
+        playlist.add(new Song("Dhadak", "Ajay Gogavale", R.raw.dhadak, R.drawable.dhadak_cover));
+        playlist.add(new Song("Maiyya Mainu", "Sachet Tandon", R.raw.maiyya_mainu, R.drawable.maiyya_menu_cover));
+        playlist.add(new Song("Finding Her", "Kushagra, Saaheal, Bharath", R.raw.finding_her, R.drawable.finding_her_cover));
+        playlist.add(new Song("Paaro", "Aditya Rikhari", R.raw.paaro, R.drawable.paaro_cover));
+        playlist.add(new Song("Main Koi Aisa Geet Gaoon", "Abhijeet, Alka Yagnik", R.raw.main_koi_aisa_geet_gaoon, R.drawable.me_loi_aisa_geet_gaoon_cover));
+        playlist.add(new Song("Yeh Haseen Vadiyan Yeh Khula Aasman", "A.R.Rahman, K.S.Chithra, S.P.Balasubrahmanyam", R.raw.yeh_haseen_vadiyan_yeh_khula_aasman, R.drawable.yeh_haseen_vadiyan_yeh_khula_aasman_cover));
+
+
+
+
         playlist.add(new Song("Roar of Narasimha", "Sam C.S", R.raw.roar_of_narsimha, R.drawable.narasimha_cover));
         playlist.add(new Song("Jai Shri Ram", "Ajay-Atul", R.raw.jai_shri_ram, R.drawable.jai_shri_ram_cover));
         playlist.add(new Song("Big Dawgs", "Hanuman Kind", R.raw.big_dawgs, R.drawable.big_dawgs_cover));
@@ -33,6 +60,11 @@ public class playlistdata {
         playlist.add(new Song("Aigiri Nandini", "Brodha V", R.raw.aigiri_nandini, R.drawable.aigiri_nandini_cover));
         playlist.add(new Song("Raja Aala", "Avdhoot Gandhi, Devdutta Manisha Baji", R.raw.raja_aala, R.drawable.raja_aala_cover));
         playlist.add(new Song("Tumbbad", "Ajay-Atul", R.raw.tumbbad, R.drawable.tumbbad_cover));
+        playlist.add(new Song("Alcoholia", "Snigdhajit Bhowmik, Ananya Chakraborty, Vishal–Shekhar", R.raw.alcoholia, R.drawable.alcoholia_cover));
+        playlist.add(new Song("Bande", "Sivam, Sam C.S., Manoj Muntashir", R.raw.bande, R.drawable.bande_cover));
+
+
+
 
         return playlist;
     }

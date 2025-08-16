@@ -4,7 +4,11 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +31,10 @@ import com.nayanpote.musicalledsbynayan.R;
 import com.nayanpote.musicalledsbynayan.databinding.ActivityDeveloperZoneBinding;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 public class developerZone extends AppCompatActivity {
 
@@ -302,40 +310,120 @@ public class developerZone extends AppCompatActivity {
             File originalApk = new File(filePath);
 
             if (originalApk.exists()) {
+                // Create a copy in external files directory
+                File externalDir = new File(getExternalFilesDir(null), "shared_apk");
+                if (!externalDir.exists()) {
+                    externalDir.mkdirs();
+                }
+
+                // Create APK file with proper name
+                File copiedApk = new File(externalDir, "Nayora_v" + getVersionName() + ".apk");
+
+                // Copy the APK file
+                if (copyApkFile(originalApk, copiedApk)) {
+                    // Use FileProvider to share
+                    Uri apkUri = FileProvider.getUriForFile(this,
+                            getPackageName() + ".fileprovider", copiedApk);
+
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("application/vnd.android.package-archive");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, apkUri);
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Nayora - Musical App");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,
+                            "🎵 Nayora - Musical App 🎵\n\n" +
+                                    "📱 Install the attached APK file\n" +
+                                    "⚠️ You may need to enable 'Install from Unknown Sources' in your device settings\n\n" +
+                                    "Developed with ❤ Passion by Nayan Pote\n" +
+                                    "File: " + copiedApk.getName());
+
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                    startActivity(Intent.createChooser(shareIntent, "Share Nayora APK"));
+                    showCustomToast("Sharing Nayora APK file...");
+                } else {
+                    showCustomToast("Failed to prepare APK file for sharing");
+                }
+            } else {
+                showCustomToast("APK file not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showCustomToast("Unable to share app file: " + e.getMessage());
+        }
+    }
+
+    private boolean copyApkFile(File source, File destination) {
+        try {
+            // Delete existing file if it exists
+            if (destination.exists()) {
+                destination.delete();
+            }
+
+            FileInputStream inStream = new FileInputStream(source);
+            FileOutputStream outStream = new FileOutputStream(destination);
+
+            byte[] buffer = new byte[8192]; // 8KB buffer for better performance
+            int bytesRead;
+
+            while ((bytesRead = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, bytesRead);
+            }
+
+            inStream.close();
+            outStream.close();
+
+            // Verify the copy was successful
+            return destination.exists() && destination.length() > 0;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private String getVersionName() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "1.0";
+        }
+    }
+
+    // Alternative method using different approach
+    private void shareAppAlternative() {
+        try {
+            ApplicationInfo app = getApplicationContext().getApplicationInfo();
+            File originalApk = new File(app.sourceDir);
+
+            if (originalApk.exists()) {
+                // Direct sharing without copying (sometimes works better)
                 Uri apkUri = FileProvider.getUriForFile(this,
                         getPackageName() + ".fileprovider", originalApk);
 
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("application/vnd.android.package-archive");
+                shareIntent.setType("*/*"); // Try with generic MIME type
                 shareIntent.putExtra(Intent.EXTRA_STREAM, apkUri);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Nayora - Musical LED Sync App");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Check out this amazing music app that syncs LED lights with beats!\n\n" +
-                                "🎵 Nayora - Where Music Meets Light! 🎵\n\n" +
-                                "Developed by: Nayan Pote\n" +
-                                "Experience the future of musical visualization!");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Nayora App");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Nayora - Musical LED Sync App\nDeveloped by: Nayan Pote");
 
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-                startActivity(Intent.createChooser(shareIntent, "Share Nayora App"));
+                // Grant permissions to all possible receivers
+                List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    grantUriPermission(packageName, apkUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
 
-                showCustomToast("Sharing Nayora app...");
-            } else {
-                // Fallback to sharing app link
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Nayora - Musical LED Sync App");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Check out Nayora - An amazing music app that syncs LED lights with beats!\n\n" +
-                                "🎵 Where Music Meets Light! 🎵\n\n" +
-                                "Developed by: Nayan Pote");
-
-                startActivity(Intent.createChooser(shareIntent, "Share Nayora"));
-                showCustomToast("Sharing app info...");
+                startActivity(Intent.createChooser(shareIntent, "Share Nayora APK"));
+                showCustomToast("Sharing APK...");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showCustomToast("Unable to share app file");
+            showCustomToast("Error sharing APK: " + e.getMessage());
         }
     }
 

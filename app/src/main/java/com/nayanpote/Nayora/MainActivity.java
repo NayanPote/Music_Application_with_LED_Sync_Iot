@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -113,6 +114,36 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
     private Runnable progressUpdateRunnable;
     private final AtomicBoolean isSeekBarTracking = new AtomicBoolean(false);
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        try {
+            binding = ActivityMainBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+
+            mainHandler = new Handler(Looper.getMainLooper());
+            visualizerHandler = new Handler(Looper.getMainLooper());
+            sharedPreferences = getSharedPreferences("playlist_prefs", MODE_PRIVATE);
+            initializeCardStates();
+            setupStatusBar();
+            initializePlaylist();
+            setupClickListeners();
+            setupBluetoothAdapter();
+            setupGradientAnimation();
+
+            // Start and bind to music service
+            Intent serviceIntent = new Intent(this, MusicService.class);
+            startService(serviceIntent);
+            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+            updateUI();
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreate", e);
+        }
+    }
+
     // Service connection
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -163,36 +194,6 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
             Log.d(TAG, "Service disconnected");
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        try {
-            binding = ActivityMainBinding.inflate(getLayoutInflater());
-            setContentView(binding.getRoot());
-
-            mainHandler = new Handler(Looper.getMainLooper());
-            visualizerHandler = new Handler(Looper.getMainLooper());
-            sharedPreferences = getSharedPreferences("playlist_prefs", MODE_PRIVATE);
-
-            setupStatusBar();
-            initializePlaylist();
-            setupClickListeners();
-            setupBluetoothAdapter();
-            setupGradientAnimation();
-
-            // Start and bind to music service
-            Intent serviceIntent = new Intent(this, MusicService.class);
-            startService(serviceIntent);
-            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-
-            updateUI();
-
-        } catch (Exception e) {
-            Log.e(TAG, "Error in onCreate", e);
-        }
-    }
 
     private void initializePlaylist() {
         try {
@@ -256,6 +257,76 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
             }
         } catch (Exception e) {
             Log.e(TAG, "Error setting up status bar", e);
+        }
+    }
+
+    private void setupClickListeners() {
+        try {
+            if (binding == null) return;
+
+            if (binding.playlistToggle != null) {
+                binding.playlistToggle.setOnClickListener(v -> flipCard());
+            }
+            if (binding.connectBtn != null) {
+                binding.connectBtn.setOnClickListener(v -> toggleBluetoothConnection());
+            }
+            if (binding.playPauseBtn != null) {
+                binding.playPauseBtn.setOnClickListener(v -> togglePlayPause());
+            }
+            if (binding.nextBtn != null) {
+                binding.nextBtn.setOnClickListener(v -> playNext());
+            }
+            if (binding.prevBtn != null) {
+                binding.prevBtn.setOnClickListener(v -> playPrevious());
+            }
+            if (binding.shuffleBtn != null) {
+                binding.shuffleBtn.setOnClickListener(v -> toggleShuffle());
+            }
+            if (binding.repeatBtn != null) {
+                binding.repeatBtn.setOnClickListener(v -> toggleRepeat());
+            }
+            if (binding.logoContainer != null) {
+                binding.logoContainer.setOnClickListener(v ->
+                        startActivity(new Intent(this, developerZone.class)));
+            }
+
+            if (binding.progressSeeker != null) {
+                binding.progressSeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser && isServiceBound && musicService != null) {
+                            musicService.seekTo(progress);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        isSeekBarTracking.set(true);
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        isSeekBarTracking.set(false);
+                    }
+                });
+            }
+
+            if (binding.searchEditText != null) {
+                binding.searchEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        filterSongs(s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {}
+                });
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting up click listeners", e);
         }
     }
 
@@ -428,75 +499,47 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
         }
     }
 
-    private void setupClickListeners() {
-        try {
-            if (binding == null) return;
+    // Call this method once when initializing your views (e.g., in onCreate or onViewCreated)
+    public void initializeCardStates() {
+        View frontCard = binding.playerCardFront;
+        View backCard = binding.playerCardBack;
 
-            if (binding.connectBtn != null) {
-                binding.connectBtn.setOnClickListener(v -> toggleBluetoothConnection());
-            }
-            if (binding.playPauseBtn != null) {
-                binding.playPauseBtn.setOnClickListener(v -> togglePlayPause());
-            }
-            if (binding.nextBtn != null) {
-                binding.nextBtn.setOnClickListener(v -> playNext());
-            }
-            if (binding.prevBtn != null) {
-                binding.prevBtn.setOnClickListener(v -> playPrevious());
-            }
-            if (binding.shuffleBtn != null) {
-                binding.shuffleBtn.setOnClickListener(v -> toggleShuffle());
-            }
-            if (binding.repeatBtn != null) {
-                binding.repeatBtn.setOnClickListener(v -> toggleRepeat());
-            }
-            if (binding.playlistToggle != null) {
-                binding.playlistToggle.setOnClickListener(v -> flipCard());
-            }
+        // Wait for layout to complete before initializing
+        frontCard.post(() -> {
+            // Set proper pivot points
+            frontCard.setPivotX(frontCard.getWidth() / 2f);
+            frontCard.setPivotY(frontCard.getHeight() / 2f);
+            backCard.setPivotX(backCard.getWidth() / 2f);
+            backCard.setPivotY(backCard.getHeight() / 2f);
 
-            if (binding.logoContainer != null) {
-                binding.logoContainer.setOnClickListener(v ->
-                        startActivity(new Intent(this, developerZone.class)));
-            }
+            // Initialize both cards to default state
+            resetToDefaultState(frontCard, backCard);
+        });
+    }
 
-            if (binding.progressSeeker != null) {
-                binding.progressSeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        if (fromUser && isServiceBound && musicService != null) {
-                            musicService.seekTo(progress);
-                        }
-                    }
+    private void resetToDefaultState(View frontCard, View backCard) {
+        // Front card visible and centered
+        frontCard.setVisibility(View.VISIBLE);
+        frontCard.setAlpha(1f);
+        frontCard.setScaleX(1f);
+        frontCard.setScaleY(1f);
+        frontCard.setTranslationX(0f);
+        frontCard.setTranslationY(0f);
+        frontCard.setRotationX(0f);
+        frontCard.setRotationY(0f);
 
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                        isSeekBarTracking.set(true);
-                    }
+        // Back card hidden and reset
+        backCard.setVisibility(View.INVISIBLE);
+        backCard.setAlpha(0f);
+        backCard.setScaleX(0.9f);
+        backCard.setScaleY(0.9f);
+        backCard.setTranslationX(0f);
+        backCard.setTranslationY(30f);
+        backCard.setRotationX(0f);
+        backCard.setRotationY(0f);
 
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        isSeekBarTracking.set(false);
-                    }
-                });
-            }
-
-            if (binding.searchEditText != null) {
-                binding.searchEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        filterSongs(s.toString());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {}
-                });
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error setting up click listeners", e);
-        }
+        // Ensure playlist state is reset
+        isPlaylistVisible = false;
     }
 
     private void flipCard() {
@@ -511,13 +554,11 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
         // Ensure both cards are properly prepared for animation
         prepareCardsForFlip(frontCard, backCard);
 
-        if (!isPlaylistVisible) {
-            // Flip to back (show playlist)
-            flipCardToBack(frontCard, backCard);
-        } else {
-            // Flip to front (show player)
-            flipCardToFront(frontCard, backCard);
+        // Only proceed with animation if views are already laid out
+        if (frontCard.getWidth() > 0 && frontCard.getHeight() > 0) {
+            proceedWithAnimation(frontCard, backCard);
         }
+        // Otherwise, the animation will be triggered from the layout listener
 
         isPlaylistVisible = !isPlaylistVisible;
 
@@ -526,6 +567,25 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
     }
 
     private void prepareCardsForFlip(View frontCard, View backCard) {
+        // Wait for views to be properly laid out before proceeding
+        if (frontCard.getWidth() == 0 || frontCard.getHeight() == 0) {
+            frontCard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    frontCard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    // Retry preparation after layout is complete
+                    prepareCardsForFlipInternal(frontCard, backCard);
+                    // Continue with the actual animation after a small delay
+                    frontCard.postDelayed(() -> proceedWithAnimation(frontCard, backCard), 50);
+                }
+            });
+            return;
+        }
+
+        prepareCardsForFlipInternal(frontCard, backCard);
+    }
+
+    private void prepareCardsForFlipInternal(View frontCard, View backCard) {
         // Enable hardware acceleration for smooth animations
         frontCard.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         backCard.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -539,133 +599,194 @@ public class MainActivity extends AppCompatActivity implements SongAdapter.OnSon
             backParams.width = frontParams.width;
         }
 
-        // Set proper pivot points for center rotation
-        frontCard.post(() -> {
-            frontCard.setPivotX(frontCard.getWidth() / 2f);
-            frontCard.setPivotY(frontCard.getHeight() / 2f);
-        });
+        // Set proper pivot points for center scaling
+        frontCard.setPivotX(frontCard.getWidth() / 2f);
+        frontCard.setPivotY(frontCard.getHeight() / 2f);
+        backCard.setPivotX(backCard.getWidth() / 2f);
+        backCard.setPivotY(backCard.getHeight() / 2f);
 
-        backCard.post(() -> {
-            backCard.setPivotX(backCard.getWidth() / 2f);
-            backCard.setPivotY(backCard.getHeight() / 2f);
-        });
+        // Initialize proper states with immediate effect
+        resetCardStates(frontCard, backCard);
+    }
 
-        // Set camera distance for 3D effect (prevents distortion)
-        float cameraDistance = frontCard.getResources().getDisplayMetrics().density * 8000;
-        frontCard.setCameraDistance(cameraDistance);
-        backCard.setCameraDistance(cameraDistance);
+    private void resetCardStates(View frontCard, View backCard) {
+        // Force immediate state reset without any transitions
+        frontCard.clearAnimation();
+        backCard.clearAnimation();
 
-        // Initialize proper states to prevent first-time glitch
         if (!isPlaylistVisible) {
-            // Currently showing front card
+            // Currently showing front card - ensure it's properly positioned
             frontCard.setVisibility(View.VISIBLE);
-            frontCard.setRotationY(0f);
             frontCard.setAlpha(1f);
             frontCard.setScaleX(1f);
             frontCard.setScaleY(1f);
+            frontCard.setTranslationY(0f);
+            frontCard.setTranslationX(0f); // Ensure no side movement
 
+            // Back card should be ready for animation but invisible
             backCard.setVisibility(View.INVISIBLE);
-            backCard.setRotationY(0f);
-            backCard.setAlpha(1f);
-            backCard.setScaleX(1f);
-            backCard.setScaleY(1f);
+            backCard.setAlpha(0f);
+            backCard.setScaleX(0.9f);
+            backCard.setScaleY(0.9f);
+            backCard.setTranslationY(30f);
+            backCard.setTranslationX(0f); // Ensure no side movement
         } else {
-            // Currently showing back card
-            frontCard.setVisibility(View.INVISIBLE);
-            frontCard.setRotationY(0f);
-            frontCard.setAlpha(1f);
-            frontCard.setScaleX(1f);
-            frontCard.setScaleY(1f);
-
+            // Currently showing back card - ensure it's properly positioned
             backCard.setVisibility(View.VISIBLE);
-            backCard.setRotationY(0f);
             backCard.setAlpha(1f);
             backCard.setScaleX(1f);
             backCard.setScaleY(1f);
+            backCard.setTranslationY(0f);
+            backCard.setTranslationX(0f); // Ensure no side movement
+
+            // Front card should be ready for animation but invisible
+            frontCard.setVisibility(View.INVISIBLE);
+            frontCard.setAlpha(0f);
+            frontCard.setScaleX(0.9f);
+            frontCard.setScaleY(0.9f);
+            frontCard.setTranslationY(-30f);
+            frontCard.setTranslationX(0f); // Ensure no side movement
+        }
+
+        // Force immediate layout update
+        frontCard.invalidate();
+        backCard.invalidate();
+    }
+
+    private void proceedWithAnimation(View frontCard, View backCard) {
+        if (!isPlaylistVisible) {
+            // Flip to back (show playlist)
+            transitionToBack(frontCard, backCard);
+        } else {
+            // Flip to front (show player)
+            transitionToFront(frontCard, backCard);
         }
     }
 
-    private void flipCardToBack(View frontCard, View backCard) {
-        // First half: Rotate front card to 90 degrees (edge view)
-        ObjectAnimator frontRotation = ObjectAnimator.ofFloat(frontCard, "rotationY", 0f, 90f);
-        frontRotation.setDuration(500); // Half of 1 second
-        frontRotation.setInterpolator(new AccelerateInterpolator());
+    private void transitionToBack(View frontCard, View backCard) {
+        // Clear any existing animations and ensure clean start
+        frontCard.clearAnimation();
+        backCard.clearAnimation();
 
-        frontRotation.addListener(new AnimatorListenerAdapter() {
+        // Ensure proper initial states before animation
+        backCard.setAlpha(0f);
+        backCard.setScaleX(0.9f);
+        backCard.setScaleY(0.9f);
+        backCard.setTranslationY(30f);
+        backCard.setTranslationX(0f); // Prevent side movement
+        backCard.setVisibility(View.VISIBLE);
+
+        // Ensure front card is properly positioned
+        frontCard.setTranslationX(0f); // Prevent side movement
+        frontCard.setTranslationY(0f);
+
+        // Create elegant slide-up and fade transition
+        AnimatorSet exitAnimSet = new AnimatorSet();
+        ObjectAnimator frontFadeOut = ObjectAnimator.ofFloat(frontCard, "alpha", 1f, 0f);
+        ObjectAnimator frontScaleDown = ObjectAnimator.ofFloat(frontCard, "scaleX", 1f, 0.95f);
+        ObjectAnimator frontScaleDownY = ObjectAnimator.ofFloat(frontCard, "scaleY", 1f, 0.95f);
+        ObjectAnimator frontSlideUp = ObjectAnimator.ofFloat(frontCard, "translationY", 0f, -30f);
+
+        exitAnimSet.playTogether(frontFadeOut, frontScaleDown, frontScaleDownY, frontSlideUp);
+        exitAnimSet.setDuration(300);
+        exitAnimSet.setInterpolator(new AccelerateInterpolator());
+
+        AnimatorSet enterAnimSet = new AnimatorSet();
+        ObjectAnimator backFadeIn = ObjectAnimator.ofFloat(backCard, "alpha", 0f, 1f);
+        ObjectAnimator backScaleUp = ObjectAnimator.ofFloat(backCard, "scaleX", 0.9f, 1f);
+        ObjectAnimator backScaleUpY = ObjectAnimator.ofFloat(backCard, "scaleY", 0.9f, 1f);
+        ObjectAnimator backSlideUp = ObjectAnimator.ofFloat(backCard, "translationY", 30f, 0f);
+
+        enterAnimSet.playTogether(backFadeIn, backScaleUp, backScaleUpY, backSlideUp);
+        enterAnimSet.setDuration(400);
+        enterAnimSet.setStartDelay(100);
+        enterAnimSet.setInterpolator(new DecelerateInterpolator(1.2f));
+
+        enterAnimSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                // Switch cards at the midpoint when front card is edge-on
                 frontCard.setVisibility(View.INVISIBLE);
-                backCard.setVisibility(View.VISIBLE);
-
-                // Second half: Rotate back card from -90 to 0 degrees
-                ObjectAnimator backRotation = ObjectAnimator.ofFloat(backCard, "rotationY", -90f, 0f);
-                backRotation.setDuration(500); // Half of 1 second
-                backRotation.setInterpolator(new DecelerateInterpolator());
-
-                backRotation.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        finishFlipAnimation(frontCard, backCard);
-                        updateEmptyState();
-                    }
-                });
-
-                backRotation.start();
+                finishTransition(frontCard, backCard);
+                updateEmptyState();
             }
         });
 
-        // Set initial state for back card
-        backCard.setRotationY(-90f);
-        frontRotation.start();
+        exitAnimSet.start();
+        enterAnimSet.start();
     }
 
-    private void flipCardToFront(View frontCard, View backCard) {
-        // First half: Rotate back card to 90 degrees (edge view)
-        ObjectAnimator backRotation = ObjectAnimator.ofFloat(backCard, "rotationY", 0f, 90f);
-        backRotation.setDuration(500); // Half of 1 second
-        backRotation.setInterpolator(new AccelerateInterpolator());
+    private void transitionToFront(View frontCard, View backCard) {
+        // Clear any existing animations and ensure clean start
+        frontCard.clearAnimation();
+        backCard.clearAnimation();
 
-        backRotation.addListener(new AnimatorListenerAdapter() {
+        // Ensure proper initial states before animation
+        frontCard.setAlpha(0f);
+        frontCard.setScaleX(0.9f);
+        frontCard.setScaleY(0.9f);
+        frontCard.setTranslationY(-30f);
+        frontCard.setTranslationX(0f); // Prevent side movement
+        frontCard.setVisibility(View.VISIBLE);
+
+        // Ensure back card is properly positioned
+        backCard.setTranslationX(0f); // Prevent side movement
+        backCard.setTranslationY(0f);
+
+        // Create elegant slide-down and fade transition
+        AnimatorSet exitAnimSet = new AnimatorSet();
+        ObjectAnimator backFadeOut = ObjectAnimator.ofFloat(backCard, "alpha", 1f, 0f);
+        ObjectAnimator backScaleDown = ObjectAnimator.ofFloat(backCard, "scaleX", 1f, 0.95f);
+        ObjectAnimator backScaleDownY = ObjectAnimator.ofFloat(backCard, "scaleY", 1f, 0.95f);
+        ObjectAnimator backSlideDown = ObjectAnimator.ofFloat(backCard, "translationY", 0f, 30f);
+
+        exitAnimSet.playTogether(backFadeOut, backScaleDown, backScaleDownY, backSlideDown);
+        exitAnimSet.setDuration(300);
+        exitAnimSet.setInterpolator(new AccelerateInterpolator());
+
+        AnimatorSet enterAnimSet = new AnimatorSet();
+        ObjectAnimator frontFadeIn = ObjectAnimator.ofFloat(frontCard, "alpha", 0f, 1f);
+        ObjectAnimator frontScaleUp = ObjectAnimator.ofFloat(frontCard, "scaleX", 0.9f, 1f);
+        ObjectAnimator frontScaleUpY = ObjectAnimator.ofFloat(frontCard, "scaleY", 0.9f, 1f);
+        ObjectAnimator frontSlideDown = ObjectAnimator.ofFloat(frontCard, "translationY", -30f, 0f);
+
+        enterAnimSet.playTogether(frontFadeIn, frontScaleUp, frontScaleUpY, frontSlideDown);
+        enterAnimSet.setDuration(400);
+        enterAnimSet.setStartDelay(100);
+        enterAnimSet.setInterpolator(new DecelerateInterpolator(1.2f));
+
+        enterAnimSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                // Switch cards at the midpoint when back card is edge-on
                 backCard.setVisibility(View.INVISIBLE);
-                frontCard.setVisibility(View.VISIBLE);
-
-                // Second half: Rotate front card from -90 to 0 degrees
-                ObjectAnimator frontRotation = ObjectAnimator.ofFloat(frontCard, "rotationY", -90f, 0f);
-                frontRotation.setDuration(500); // Half of 1 second
-                frontRotation.setInterpolator(new DecelerateInterpolator());
-
-                frontRotation.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        finishFlipAnimation(frontCard, backCard);
-                        // Clear search text when returning to front
-                        if (binding.searchEditText != null) {
-                            binding.searchEditText.setText("");
-                        }
-                    }
-                });
-
-                frontRotation.start();
+                finishTransition(frontCard, backCard);
+                // Clear search text when returning to front
+                if (binding.searchEditText != null) {
+                    binding.searchEditText.setText("");
+                }
             }
         });
 
-        // Set initial state for front card
-        frontCard.setRotationY(-90f);
-        backRotation.start();
+        exitAnimSet.start();
+        enterAnimSet.start();
     }
 
-    private void finishFlipAnimation(View frontCard, View backCard) {
+    private void finishTransition(View frontCard, View backCard) {
         // Reset layer types to optimize performance
         frontCard.setLayerType(View.LAYER_TYPE_NONE, null);
         backCard.setLayerType(View.LAYER_TYPE_NONE, null);
 
-        // Reset rotation values for clean state
-        frontCard.setRotationY(0f);
-        backCard.setRotationY(0f);
+        // Reset all animation properties for clean state
+        frontCard.setAlpha(1f);
+        frontCard.setScaleX(1f);
+        frontCard.setScaleY(1f);
+        frontCard.setTranslationY(0f);
+        frontCard.setTranslationX(0f); // Ensure no side offset
+
+        backCard.setAlpha(1f);
+        backCard.setScaleX(1f);
+        backCard.setScaleY(1f);
+        backCard.setTranslationY(0f);
+        backCard.setTranslationX(0f); // Ensure no side offset
 
         isCardFlipping = false;
     }

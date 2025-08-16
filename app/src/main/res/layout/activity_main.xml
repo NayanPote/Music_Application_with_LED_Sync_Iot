@@ -109,9 +109,10 @@
 
                         <ImageView
                             android:id="@+id/playlistToggle"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="center"
+                            android:padding="10dp"
                             android:src="@drawable/ic_playlist_open"
                             app:tint="@android:color/white"
                             android:background="?android:attr/selectableItemBackgroundBorderless" />
@@ -279,8 +280,9 @@
 
                                     <ImageView
                                         android:id="@+id/prevBtn"
-                                        android:layout_width="28dp"
-                                        android:layout_height="28dp"
+                                        android:layout_width="56dp"
+                                        android:layout_height="56dp"
+                                        android:padding="12dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_previous"
                                         app:tint="@android:color/white"
@@ -298,8 +300,9 @@
 
                                     <ImageView
                                         android:id="@+id/playPauseBtn"
-                                        android:layout_width="36dp"
-                                        android:layout_height="36dp"
+                                        android:layout_width="72dp"
+                                        android:layout_height="72dp"
+                                        android:padding="12dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_play"
                                         app:tint="@android:color/white"
@@ -317,8 +320,9 @@
 
                                     <ImageView
                                         android:id="@+id/nextBtn"
-                                        android:layout_width="28dp"
-                                        android:layout_height="28dp"
+                                        android:layout_width="56dp"
+                                        android:layout_height="56dp"
+                                        android:padding="12dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_next"
                                         app:tint="@android:color/white"
@@ -346,8 +350,9 @@
 
                                     <ImageView
                                         android:id="@+id/shuffleBtn"
-                                        android:layout_width="22dp"
-                                        android:layout_height="22dp"
+                                        android:layout_width="44dp"
+                                        android:layout_height="44dp"
+                                        android:padding="10dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_shuffle"
                                         app:tint="@android:color/white"
@@ -365,8 +370,9 @@
 
                                     <ImageView
                                         android:id="@+id/repeatBtn"
-                                        android:layout_width="22dp"
-                                        android:layout_height="22dp"
+                                        android:layout_width="44dp"
+                                        android:layout_height="44dp"
+                                        android:padding="10dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_repeat"
                                         app:tint="@android:color/white"
@@ -386,7 +392,7 @@
                             android:orientation="horizontal"
                             android:gravity="center|bottom"
                             android:elevation="-10dp"
-                            android:layout_marginTop="-90dp"
+                            android:layout_marginTop="-95dp"
                             android:alpha="0.9"
                             android:clipToPadding="false" />
 
